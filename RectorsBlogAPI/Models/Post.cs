@@ -17,13 +17,14 @@ namespace RectorsBlogAPI.Models
         public string Summary { get; set; }
         [Required]
         public string Body { get; set; }
+        public DateTime creationDate { get; set; }
 
         // *-1
         public int AuthorId { get; set; }
         public ApplicationUser Author { get; set; }
 
         // 1-*
-        public ICollection<Comment> Comments;
+        public IList<Comment> Comments { get; set; }
 
         // *-*
         public IList<PostCategory> PostCategories { get; set; }

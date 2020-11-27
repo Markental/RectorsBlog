@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RectorsBlogAPI.Data;
 
@@ -14,12 +15,15 @@ namespace RectorsBlogAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113");
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -37,7 +41,8 @@ namespace RectorsBlogAPI.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType");
 
@@ -97,10 +102,11 @@ namespace RectorsBlogAPI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Category", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CategoryName");
 
@@ -109,16 +115,19 @@ namespace RectorsBlogAPI.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Comment", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AuthorId");
 
                     b.Property<string>("Content");
 
                     b.Property<int>("PostId");
+
+                    b.Property<DateTime>("creationDate");
 
                     b.HasKey("CommentId");
 
@@ -129,10 +138,11 @@ namespace RectorsBlogAPI.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Identity.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -149,15 +159,17 @@ namespace RectorsBlogAPI.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Identity.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccessFailedCount");
 
@@ -203,15 +215,17 @@ namespace RectorsBlogAPI.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Post", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Post", b =>
                 {
                     b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AuthorId");
 
@@ -223,6 +237,8 @@ namespace RectorsBlogAPI.Migrations
                     b.Property<string>("Title")
                         .IsRequired();
 
+                    b.Property<DateTime>("creationDate");
+
                     b.Property<string>("posterURL");
 
                     b.HasKey("PostId");
@@ -232,7 +248,7 @@ namespace RectorsBlogAPI.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.PostCategory", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.PostCategory", b =>
                 {
                     b.Property<int>("PostId");
 
@@ -247,7 +263,7 @@ namespace RectorsBlogAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationRole")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -255,7 +271,7 @@ namespace RectorsBlogAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationUser")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -263,7 +279,7 @@ namespace RectorsBlogAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationUser")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -271,12 +287,12 @@ namespace RectorsBlogAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationRole")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationUser")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -284,44 +300,44 @@ namespace RectorsBlogAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationUser")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Comment", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Comment", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationUser", "Author")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationUser", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("RectorBlog.Models.Post", "Post")
-                        .WithMany()
+                    b.HasOne("RectorsBlogAPI.Models.Post", "Post")
+                        .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.Post", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.Post", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Identity.ApplicationUser", "Author")
-                        .WithMany("BlogPosts")
+                    b.HasOne("RectorsBlogAPI.Models.Identity.ApplicationUser", "Author")
+                        .WithMany("Posts")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("RectorBlog.Models.PostCategory", b =>
+            modelBuilder.Entity("RectorsBlogAPI.Models.PostCategory", b =>
                 {
-                    b.HasOne("RectorBlog.Models.Category", "Category")
+                    b.HasOne("RectorsBlogAPI.Models.Category", "Category")
                         .WithMany("PostCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("RectorBlog.Models.Post", "Post")
+                    b.HasOne("RectorsBlogAPI.Models.Post", "Post")
                         .WithMany("PostCategories")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

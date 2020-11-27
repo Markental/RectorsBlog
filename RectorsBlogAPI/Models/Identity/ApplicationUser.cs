@@ -16,8 +16,8 @@ namespace RectorsBlogAPI.Models.Identity
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public ICollection<Post> BlogPosts { get; set; }
+        public IList<Post> Posts { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        public IList<Comment> Comments { get; set; }
     }
 }

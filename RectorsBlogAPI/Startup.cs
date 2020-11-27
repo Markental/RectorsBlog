@@ -36,7 +36,7 @@ namespace RectorsBlogAPI
             services.AddCors();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection"));
             });
 
             services
@@ -79,7 +79,7 @@ namespace RectorsBlogAPI
 
 
             //services.AddSpaStaticFiles();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

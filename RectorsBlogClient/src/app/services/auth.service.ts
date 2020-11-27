@@ -12,15 +12,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(data): Observable<any> {
+  login(data:any): Observable<any> {
     return this.http.post(this.loginPath, data);
   }
 
-  register(data): Observable<any> {
+  register(data:any): Observable<any> {
     return this.http.post(this.registerPath, data);
   }
 
-  saveToken(token) {
+  saveToken(token:any) {
     localStorage.setItem('token', token);
   }
 
