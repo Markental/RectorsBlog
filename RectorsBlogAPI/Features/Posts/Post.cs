@@ -1,11 +1,11 @@
-﻿using RectorsBlogAPI.Models.Identity;
+﻿using RectorsBlogAPI.Features.Categories;
+using RectorsBlogAPI.Features.Comments;
+using RectorsBlogAPI.Features.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace RectorsBlogAPI.Models
+namespace RectorsBlogAPI.Features.Posts
 {
     public class Post
     {

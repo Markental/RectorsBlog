@@ -1,10 +1,8 @@
-﻿using RectorsBlogAPI.Models.Identity;
+﻿using RectorsBlogAPI.Features.Identity;
+using RectorsBlogAPI.Features.Posts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace RectorsBlogAPI.Models
+namespace RectorsBlogAPI.Features.Comments
 {
     public class Comment
     {

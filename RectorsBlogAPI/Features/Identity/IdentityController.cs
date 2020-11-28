@@ -1,29 +1,24 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using RectorsBlogAPI.Models.Identity;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RectorsBlogAPI.Controllers
+namespace RectorsBlogAPI.Features.Identity
 {
     public class IdentityController : ApiController
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IIdentityService identityService;
         private readonly ApplicationSettings appSettings;
 
         public IdentityController(
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager,
+            IIdentityService identityService,
             IOptions<ApplicationSettings> appSettings)
         {
             this.userManager = userManager;
+            this.identityService = identityService;
             this.appSettings = appSettings.Value;
         }
 
@@ -62,22 +57,9 @@ namespace RectorsBlogAPI.Controllers
                 return Unauthorized();
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var encryptedToken = tokenHandler.WriteToken(token);
+            var token = identityService.GenerateJwtToken(user.Id.ToString(), user.UserName, appSettings.Secret);
 
-            return Ok(JsonSerializer.Serialize(encryptedToken));
+            return Ok(JsonSerializer.Serialize(token));
         }
 
     }

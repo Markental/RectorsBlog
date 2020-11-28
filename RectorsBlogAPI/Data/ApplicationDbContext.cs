@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RectorsBlogAPI.Models;
-using RectorsBlogAPI.Models.Identity;
+using RectorsBlogAPI.Features.Categories;
+using RectorsBlogAPI.Features.Comments;
+using RectorsBlogAPI.Features.Identity;
+using RectorsBlogAPI.Features.Posts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

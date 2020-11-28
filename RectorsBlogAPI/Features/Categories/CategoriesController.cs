@@ -1,65 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RectorsBlogAPI.Data;
-using RectorsBlogAPI.Models;
 
-namespace RectorsBlogAPI.Controllers
+namespace RectorsBlogAPI.Features.Categories
 {
-    public class CommentsController : ApiController
+    
+    public class CategoriesController : ApiController
     {
         private readonly ApplicationDbContext _context;
 
-        public CommentsController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Comments
+        // GET: api/Categories
         [HttpGet]
-        public IEnumerable<Comment> GetComments()
+        public IEnumerable<Category> GetCategories()
         {
-            return _context.Comments;
+            return _context.Categories;
         }
 
-        // GET: api/Comments/5
+        // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetComment([FromRoute] int id)
+        public async Task<IActionResult> GetCategory([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var comment = await _context.Comments.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
-            if (comment == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return Ok(comment);
+            return Ok(category);
         }
 
-        // PUT: api/Comments/5
+        // PUT: api/Categories/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment([FromRoute] int id, [FromBody] Comment comment)
+        public async Task<IActionResult> PutCategory([FromRoute] int id, [FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != comment.CommentId)
+            if (id != category.CategoryId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(comment).State = EntityState.Modified;
+            _context.Entry(category).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +65,7 @@ namespace RectorsBlogAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CommentExists(id))
+                if (!CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -80,45 +78,45 @@ namespace RectorsBlogAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Comments
+        // POST: api/Categories
         [HttpPost]
-        public async Task<IActionResult> PostComment([FromBody] Comment comment)
+        public async Task<IActionResult> PostCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Comments.Add(comment);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
+            return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
-        // DELETE: api/Comments/5
+        // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Comments.Remove(comment);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
-            return Ok(comment);
+            return Ok(category);
         }
 
-        private bool CommentExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Comments.Any(e => e.CommentId == id);
+            return _context.Categories.Any(e => e.CategoryId == id);
         }
     }
 }

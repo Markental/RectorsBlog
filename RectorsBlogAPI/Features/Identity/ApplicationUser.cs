@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
+using RectorsBlogAPI.Features.Comments;
+using RectorsBlogAPI.Features.Posts;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace RectorsBlogAPI.Models.Identity
+namespace RectorsBlogAPI.Features.Identity
 {
     public class ApplicationUser : IdentityUser<int>
     {

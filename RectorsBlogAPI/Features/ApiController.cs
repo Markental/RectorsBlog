@@ -1,4 +1,4 @@
-﻿namespace RectorsBlogAPI.Controllers
+﻿namespace RectorsBlogAPI.Features
 {
     using Microsoft.AspNetCore.Mvc;
     [Route("api/[controller]")]
