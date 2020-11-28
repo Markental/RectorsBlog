@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RectorsBlogAPI.Data;
 using RectorsBlogAPI.Features.Identity;
 using RectorsBlogAPI.Features.Posts;
@@ -71,5 +72,16 @@ namespace RectorsBlogAPI.Infrastructure
             services.Configure<ApplicationSettings>(applicationSettings);
             return applicationSettings.Get<ApplicationSettings>();
         }
+
+        public static IServiceCollection AddSwagger(this IServiceCollection services)
+            => services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Title = "My RectorsBlog API",
+                        Version = "v1"
+                    });
+                });
+        
     }
 }

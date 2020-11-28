@@ -24,7 +24,8 @@ namespace RectorsBlogAPI
                 .AddIdentity()
                 .AddJwtAuthentication(services.GetApplicationSettings(Configuration))
                 .AddApplicationServices()
-
+                .AddSwagger()
+                
                 .AddMvc(); 
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -40,7 +41,9 @@ namespace RectorsBlogAPI
             }
 
             // global cors policy
-            app.UseCors(x => x
+            app
+            .UseSwaggerUI()
+            .UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader())
