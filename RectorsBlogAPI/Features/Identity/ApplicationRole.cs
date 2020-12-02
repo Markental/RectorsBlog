@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace RectorsBlogAPI.Features.Identity
 {
@@ -11,6 +12,7 @@ namespace RectorsBlogAPI.Features.Identity
         public ApplicationRole()
         { }
 
+        [Required]
         public string Description { get; set; }
     }
 }

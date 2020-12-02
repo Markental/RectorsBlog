@@ -1,12 +1,14 @@
 ﻿using RectorsBlogAPI.Features.Identity;
 using RectorsBlogAPI.Features.Posts;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace RectorsBlogAPI.Features.Comments
 {
     public class Comment
     {
         public int CommentId { get; set; }
+        [Required]
         public string Content { get; set; }
 
         // *-1
@@ -15,6 +17,7 @@ namespace RectorsBlogAPI.Features.Comments
 
         public int PostId { get; set; }
         public Post Post { get; set; }
+        [Required]
         public DateTime creationDate { get; set; }
     }
 }
