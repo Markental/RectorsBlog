@@ -13,6 +13,6 @@ export class PostService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   create(data: any): Observable<Post> {
-    return this.http.post<Post>(this.postPath + "create", data, {headers: {"Authorization": `Bearer ${this.authService.getToken()}`}});
+    return this.http.post<Post>(this.postPath + "create", data);
   }
 }
