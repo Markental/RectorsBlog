@@ -6,10 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RectorsBlogAPI.Data;
 using RectorsBlogAPI.Features.Identity;
+using RectorsBlogAPI.Features.Identity.Models;
 using RectorsBlogAPI.Features.Posts;
+using RectorsBlogAPI.Infrastructure.Filters;
 using System.Text;
 
-namespace RectorsBlogAPI.Infrastructure
+namespace RectorsBlogAPI.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -82,6 +84,11 @@ namespace RectorsBlogAPI.Infrastructure
                         Version = "v1"
                     });
                 });
-        
+
+        public static void AddApiMvc(this IServiceCollection services)
+            => services
+                .AddMvc(options => options
+                    .Filters
+                    .Add<ModelOrNotFoundActionFilter>());
     }
 }

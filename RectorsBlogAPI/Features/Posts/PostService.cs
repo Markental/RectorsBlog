@@ -1,4 +1,6 @@
-﻿using RectorsBlogAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RectorsBlogAPI.Data;
+using RectorsBlogAPI.Features.Posts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +35,33 @@ namespace RectorsBlogAPI.Features.Posts
 
             return post.PostId;
         }
+        public async Task<IEnumerable<PostListingServiceModel>> ByUser(int userId)
+            => await data
+                .Posts
+                .Where(p => p.AuthorId == userId)
+                .Select(p => new PostListingServiceModel
+                {
+                    PostId = p.PostId,
+                    Title = p.Title,
+                    Summary = p.Summary,
+                    creationDate = p.creationDate,
+                    posterURL = p.posterURL
+                }).ToListAsync();
+
+        public async Task<PostDetailsServiceModel> Details(int postId)
+            => await data
+                .Posts
+                .Where(p => p.PostId == postId)
+                .Select(p => new PostDetailsServiceModel 
+                {
+                    PostId = p.PostId,
+                    AuthorId = p.AuthorId,
+                    UserName = p.Author.UserName,
+                    posterURL = p.posterURL,
+                    Summary = p.Summary,
+                    Body = p.Body,
+                    creationDate = p.creationDate
+                })
+                .FirstOrDefaultAsync();
     }
 }

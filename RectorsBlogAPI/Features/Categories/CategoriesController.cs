@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RectorsBlogAPI.Data;
+using RectorsBlogAPI.Features.Categories.Models;
 
 namespace RectorsBlogAPI.Features.Categories
 {

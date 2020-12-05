@@ -1,9 +1,9 @@
-﻿using RectorsBlogAPI.Features.Identity;
-using RectorsBlogAPI.Features.Posts;
+﻿using RectorsBlogAPI.Features.Identity.Models;
+using RectorsBlogAPI.Features.Posts.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace RectorsBlogAPI.Features.Comments
+namespace RectorsBlogAPI.Features.Comments.Models
 {
     public class Comment
     {

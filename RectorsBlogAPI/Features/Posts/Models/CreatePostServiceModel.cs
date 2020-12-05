@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RectorsBlogAPI.Features.Posts
+namespace RectorsBlogAPI.Features.Posts.Models
 {
-    public class CreatePostRequestModel
+    public class CreatePostServiceModel
     {
         [Required]
         public string posterURL { get; set; }

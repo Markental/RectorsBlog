@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RectorsBlogAPI.Features.Identity
+namespace RectorsBlogAPI.Features.Identity.Models
 {
     public class RegisterRequestModel
     {

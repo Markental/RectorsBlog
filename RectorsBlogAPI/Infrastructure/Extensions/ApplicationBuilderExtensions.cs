@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RectorsBlogAPI.Data;
 
-namespace RectorsBlogAPI.Infrastructure
+namespace RectorsBlogAPI.Infrastructure.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

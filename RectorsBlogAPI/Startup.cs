@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RectorsBlogAPI.Data;
-using RectorsBlogAPI.Infrastructure;
+using RectorsBlogAPI.Infrastructure.Extensions;
+using RectorsBlogAPI.Infrastructure.Filters;
 
 namespace RectorsBlogAPI
 {
@@ -26,7 +25,7 @@ namespace RectorsBlogAPI
                 .AddApplicationServices()
                 .AddSwagger()
                 
-                .AddMvc(); 
+                .AddApiMvc(); 
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

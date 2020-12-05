@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RectorsBlogAPI.Features.Categories;
-using RectorsBlogAPI.Features.Comments;
-using RectorsBlogAPI.Features.Identity;
-using RectorsBlogAPI.Features.Posts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RectorsBlogAPI.Features.Categories.Models;
+using RectorsBlogAPI.Features.Comments.Models;
+using RectorsBlogAPI.Features.Identity.Models;
+using RectorsBlogAPI.Features.Posts.Models;
 
 namespace RectorsBlogAPI.Data
 {

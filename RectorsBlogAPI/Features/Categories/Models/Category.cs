@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RectorsBlogAPI.Features.Categories
+namespace RectorsBlogAPI.Features.Categories.Models
 {
     public class Category
     {

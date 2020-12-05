@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 
-namespace RectorsBlogAPI.Infrastructure
+namespace RectorsBlogAPI.Infrastructure.Extensions
 {
     public static class IdentityExtensions
     {

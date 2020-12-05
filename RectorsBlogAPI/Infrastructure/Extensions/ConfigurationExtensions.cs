@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RectorsBlogAPI.Infrastructure
+namespace RectorsBlogAPI.Infrastructure.Extensions
 {
     public static class ConfigurationExtensions
     {

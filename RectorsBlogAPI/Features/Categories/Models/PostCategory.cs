@@ -1,6 +1,6 @@
-﻿using RectorsBlogAPI.Features.Posts;
+﻿using RectorsBlogAPI.Features.Posts.Models;
 
-namespace RectorsBlogAPI.Features.Categories
+namespace RectorsBlogAPI.Features.Categories.Models
 {
     public class PostCategory
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace RectorsBlogAPI.Features.Identity
+namespace RectorsBlogAPI.Features.Identity.Models
 {
     public class ApplicationRole : IdentityRole<int>
     {
