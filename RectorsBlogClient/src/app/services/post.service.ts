@@ -15,4 +15,16 @@ export class PostService {
   create(data: any): Observable<Post> {
     return this.http.post<Post>(this.postPath + "create", data);
   }
+
+  getPosts() : Observable<Array<Post>> {
+    return this.http.get<Array<Post>>(this.postPath);
+  }
+
+  getPostById(id: number) :Observable<Post> {
+    return this.http.get<Post>(this.postPath + id);
+  }
+
+  deletePost(id: number) {
+    return this.http.delete(this.postPath + id);
+  }
 }

@@ -12,13 +12,23 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CreatepostComponent } from './createpost/createpost.component'
 import { AuthGuardService } from './services/auth-guard.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { ListPostsComponent } from './list-posts/list-posts.component';
+import { RightPanelComponent } from './right-panel/right-panel.component';
+import { NavbarPanelComponent } from './navbar-panel/navbar-panel.component';
+import { FooterPanelComponent } from './footer-panel/footer-panel.component';
+import { PostdetailsComponent } from './postdetails/postdetails.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    CreatepostComponent
+    CreatepostComponent,
+    ListPostsComponent,
+    RightPanelComponent,
+    NavbarPanelComponent,
+    FooterPanelComponent,
+    PostdetailsComponent
   ],
   imports: [
     BrowserModule,

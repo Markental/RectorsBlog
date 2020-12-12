@@ -35,6 +35,22 @@ namespace RectorsBlogAPI.Features.Posts
 
             return post.PostId;
         }
+
+        public async Task<IEnumerable<PostListingServiceModel>> ListAllPosts()
+             => await data
+                .Posts
+                .Select(p => new PostListingServiceModel 
+                {
+                    PostId = p.PostId,
+                    Title = p.Title,
+                    Summary = p.Summary,
+                    creationDate = p.creationDate,
+                    posterURL = p.posterURL,
+                    UserName = p.Author.UserName,
+                    UserId = p.AuthorId
+                })
+                .ToListAsync();
+
         public async Task<IEnumerable<PostListingServiceModel>> ByUser(int userId)
             => await data
                 .Posts
@@ -45,7 +61,9 @@ namespace RectorsBlogAPI.Features.Posts
                     Title = p.Title,
                     Summary = p.Summary,
                     creationDate = p.creationDate,
-                    posterURL = p.posterURL
+                    posterURL = p.posterURL,
+                    UserName = p.Author.UserName,
+                    UserId = p.AuthorId
                 }).ToListAsync();
 
         public async Task<PostDetailsServiceModel> Details(int postId)
@@ -60,8 +78,49 @@ namespace RectorsBlogAPI.Features.Posts
                     posterURL = p.posterURL,
                     Summary = p.Summary,
                     Body = p.Body,
+                    Title = p.Title,
                     creationDate = p.creationDate
                 })
                 .FirstOrDefaultAsync();
+
+        public async Task<bool> Edit(int postId, string posterURL, string title, string body, string summary, int authorId) 
+        {
+            var post = await ByIdAndByUserId(postId, authorId);
+
+            if (post == null) 
+            {
+                return false;
+            }
+
+            post.posterURL = posterURL;
+            post.Title = title;
+            post.Body = body;
+            post.Summary = summary;
+
+            await data.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> Delete(int postId, int authorId)
+        {
+            var post = await ByIdAndByUserId(postId, authorId);
+
+            if (post == null) 
+            {
+                return false;
+            }
+
+            data.Posts.Remove(post);
+
+            await data.SaveChangesAsync();
+
+            return true;
+        }
+
+        private async Task<Post> ByIdAndByUserId(int postId, int userId) 
+            => await data.Posts.Where(p => p.PostId == postId && p.AuthorId == userId).FirstOrDefaultAsync();
+
+
     }
 }

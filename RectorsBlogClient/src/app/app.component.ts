@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'RectorsBlogClient';
+  title = 'Rectors Blog';
+  
+  onActivate(event: any) {
+    window.scroll(0,0);
+  }
+
 }

@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RectorsBlogAPI.Infrastructure.Filters
 {
     public class ModelOrNotFoundActionFilter : ActionFilterAttribute
     {
+        // Automatically send NotFound response sif model was not found in database
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Result is ObjectResult result) 
@@ -20,8 +17,6 @@ namespace RectorsBlogAPI.Infrastructure.Filters
                     context.Result = new NotFoundResult();
                 }
             }
-
-
         }
     }
 }

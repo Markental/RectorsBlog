@@ -16,6 +16,12 @@ namespace RectorsBlogAPI.Features.Posts
             this.postService = postService;
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<PostListingServiceModel>> AllPosts() 
+        {
+            return await postService.ListAllPosts();
+        }
+
         [Authorize]
         [HttpPost]
         [Route(nameof(Create))]
@@ -39,13 +45,43 @@ namespace RectorsBlogAPI.Features.Posts
         public async Task<IEnumerable<PostListingServiceModel>> Mine()
             => await postService.ByUser(User.GetId());
 
-        [Authorize]
         [HttpGet]
-        [Route("{id}")]
-        public async Task<ActionResult<PostDetailsServiceModel>> Details(int postId) 
+        [Route("{postId}")]
+        public async Task<ActionResult<PostDetailsServiceModel>> Details(int postId)
             => await postService.Details(postId);
-        
-        
 
+        [Authorize]
+        [HttpPut]
+        [Route("{postId}")]
+        public async Task<ActionResult> Edit(EditPostServiceModel model) 
+        {
+            var userId = User.GetId();
+
+            var updated = await postService.Edit(model.PostId, model.posterURL, model.Title, model.Body, model.Summary, userId);
+
+            if (!updated) 
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{postId}")]
+        public async Task<ActionResult> Delete(int postId) 
+        {
+            var userId = User.GetId();
+
+            var deleted = await postService.Delete(postId, userId);
+
+            if (!deleted) 
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
     }
 }
