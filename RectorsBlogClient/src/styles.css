@@ -4,6 +4,28 @@ form {
     padding: 10% 15%;
 }
 
+.horizontal-scroll-wrapper{
+  position:absolute;
+  display:block;
+  top:0;
+  left:0;
+  width:80px;
+  max-height:500px;
+  margin:0;
+  background:#abc;
+  overflow-y:auto;
+  overflow-x:hidden;
+  transform:rotate(-90deg) translateY(-80px);
+  transform-origin:right top;
+}
+.horizontal-scroll-wrapper > div{
+  display:block;
+  padding:5px;
+  background:#cab;
+  transform:rotate(90deg);
+  transform-origin: right top;
+}
+
 /* stylelint-disable selector-list-comma-newline-after */
 
 .blog-header {
@@ -107,4 +129,11 @@ form {
   .blog-footer p:last-child {
     margin-bottom: 0;
   }
-  
+  .btn {
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  .br-rad {
+    border-radius: 8px;
+  }

@@ -1,27 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../models/Post';
 import { AuthService } from '../services/auth.service';
 import { PostService } from '../services/post.service';
 
 @Component({
-  selector: 'app-list-posts',
-  templateUrl: './list-posts.component.html',
-  styleUrls: ['./list-posts.component.css']
+  selector: 'app-list-posts-by-category',
+  templateUrl: './list-posts-by-category.component.html',
+  styleUrls: ['./list-posts-by-category.component.css']
 })
-export class ListPostsComponent implements OnInit {
+export class ListPostsByCategoryComponent implements OnInit {
+  name!: string;
   posts: Array<Post> = [];
-  constructor(private postService : PostService, private router: Router, private authService: AuthService) { }
+  constructor(private postService : PostService, private router: Router, private authService: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.fetchPosts();
   }
 
   fetchPosts() {
-    this.postService.getPosts().subscribe(posts => {
-      this.posts = posts;
-      console.log(this.posts);
-    });
+    this.route.params.subscribe(params => {
+      this.name = params['name'];
+      this.postService.getPostsByCategoryName(this.name).subscribe(posts => {
+        this.posts = posts;
+        console.log(this.posts);
+      });
+    })
+    
   }
 
   getDateTime(date: string) {

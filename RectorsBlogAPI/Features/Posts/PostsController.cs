@@ -17,7 +17,7 @@ namespace RectorsBlogAPI.Features.Posts
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PostListingServiceModel>> AllPosts() 
+        public async Task<IEnumerable<PostListingServiceModel>> AllPosts()
         {
             return await postService.ListAllPosts();
         }
@@ -34,7 +34,8 @@ namespace RectorsBlogAPI.Features.Posts
                 model.Body,
                 model.Summary,
                 userId,
-                model.posterURL);
+                model.posterURL,
+                model.categoryIds);
 
             return Created(nameof(this.Create), id);
         }
@@ -53,13 +54,13 @@ namespace RectorsBlogAPI.Features.Posts
         [Authorize]
         [HttpPut]
         [Route("{postId}")]
-        public async Task<ActionResult> Edit(EditPostServiceModel model) 
+        public async Task<ActionResult> Edit(EditPostServiceModel model)
         {
             var userId = User.GetId();
 
             var updated = await postService.Edit(model.PostId, model.posterURL, model.Title, model.Body, model.Summary, userId);
 
-            if (!updated) 
+            if (!updated)
             {
                 return BadRequest();
             }
@@ -70,18 +71,24 @@ namespace RectorsBlogAPI.Features.Posts
         [Authorize]
         [HttpDelete]
         [Route("{postId}")]
-        public async Task<ActionResult> Delete(int postId) 
+        public async Task<ActionResult> Delete(int postId)
         {
             var userId = User.GetId();
 
             var deleted = await postService.Delete(postId, userId);
 
-            if (!deleted) 
+            if (!deleted)
             {
                 return BadRequest();
             }
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("category/{name}")]
+        public async Task<IEnumerable<PostListingServiceModel>> PostsByCategoryName(string name) 
+            => await postService.ByCategoryName(name);
+        
     }
 }

@@ -1,20 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RectorsBlogAPI.Data;
 using RectorsBlogAPI.Features.Comments.Models;
+using RectorsBlogAPI.Features.Identity.Models;
+using RectorsBlogAPI.Infrastructure.Extensions;
 
 namespace RectorsBlogAPI.Features.Comments
 {
     public class CommentsController : ApiController
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _users;
 
-        public CommentsController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _users = userManager;
         }
 
         // GET: api/Comments
@@ -26,25 +33,29 @@ namespace RectorsBlogAPI.Features.Comments
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetComment([FromRoute] int id)
+        public async Task<IEnumerable<CommentResponseModel>> GetCommentsByPostId([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var comments = await _context
+                .Comments
+                .Where(c => c.PostId == id)
+                .Select(c => new CommentResponseModel
+                {
+                    AuthorId = c.AuthorId,
+                    AuthorName = c.Author.UserName,
+                    Content = c.Content,
+                    PostId = c.PostId,
+                    creationDate = c.creationDate,
+                    CommentId = c.CommentId
+                })
+                .OrderByDescending(c=>c.creationDate)
+                .ToListAsync();
 
-            var comment = await _context.Comments.FindAsync(id);
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(comment);
+            return comments;
         }
 
         // PUT: api/Comments/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutComment([FromRoute] int id, [FromBody] Comment comment)
         {
             if (!ModelState.IsValid)
@@ -53,6 +64,11 @@ namespace RectorsBlogAPI.Features.Comments
             }
 
             if (id != comment.CommentId)
+            {
+                return BadRequest();
+            }
+
+            if (comment.AuthorId != User.GetId())
             {
                 return BadRequest();
             }
@@ -80,21 +96,27 @@ namespace RectorsBlogAPI.Features.Comments
 
         // POST: api/Comments
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostComment([FromBody] Comment comment)
         {
+            comment.AuthorId = User.GetId();
+            comment.creationDate = DateTime.Now;
+            comment.Author = await _users.GetUserAsync(User);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
+            return Created(nameof(this.PostComment), comment.CommentId);
         }
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -106,6 +128,11 @@ namespace RectorsBlogAPI.Features.Comments
             if (comment == null)
             {
                 return NotFound();
+            }
+
+            if (comment.AuthorId != User.GetId()) 
+            {
+                return BadRequest();
             }
 
             _context.Comments.Remove(comment);

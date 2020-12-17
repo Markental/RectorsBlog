@@ -22,7 +22,7 @@ namespace RectorsBlogAPI.Features.Categories
         [HttpGet]
         public IEnumerable<Category> GetCategories()
         {
-            return _context.Categories;
+            return _context.Categories.OrderBy(c => c.CategoryId);
         }
 
         // GET: api/Categories/5
@@ -42,6 +42,22 @@ namespace RectorsBlogAPI.Features.Categories
             }
 
             return Ok(category);
+        }
+
+        [HttpGet]
+        [Route(nameof(GetCategoriesByPostId)+"/{postId}")]
+        public async Task<IEnumerable<Category>> GetCategoriesByPostId(int postId) 
+        {
+            var categories = await _context.PostCategories
+                .Where(pc => pc.PostId == postId)
+                .Select(pc => new Category 
+                {
+                    CategoryId = pc.Category.CategoryId, CategoryName = pc.Category.CategoryName 
+                })
+                .ToListAsync();
+
+            return categories;
+
         }
 
         // PUT: api/Categories/5

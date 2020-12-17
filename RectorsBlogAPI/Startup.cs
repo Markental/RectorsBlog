@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RectorsBlogAPI.Infrastructure.Extensions;
-using RectorsBlogAPI.Infrastructure.Filters;
 
 namespace RectorsBlogAPI
 {
@@ -39,13 +38,14 @@ namespace RectorsBlogAPI
                 app.UseHsts();
             }
 
-            // global cors policy
             app
             .UseSwaggerUI()
             .UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader())
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .SetIsOriginAllowed((host) => true))
             .UseHttpsRedirection()
             .UseAuthentication()
             .UseStaticFiles()

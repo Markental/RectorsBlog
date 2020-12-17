@@ -17,6 +17,9 @@ import { RightPanelComponent } from './right-panel/right-panel.component';
 import { NavbarPanelComponent } from './navbar-panel/navbar-panel.component';
 import { FooterPanelComponent } from './footer-panel/footer-panel.component';
 import { PostdetailsComponent } from './postdetails/postdetails.component';
+import { EditpostComponent } from './editpost/editpost.component';
+import { ListPostsByCategoryComponent } from './list-posts-by-category/list-posts-by-category.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { PostdetailsComponent } from './postdetails/postdetails.component';
     RightPanelComponent,
     NavbarPanelComponent,
     FooterPanelComponent,
-    PostdetailsComponent
+    PostdetailsComponent,
+    EditpostComponent,
+    ListPostsByCategoryComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

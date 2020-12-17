@@ -61,8 +61,9 @@ namespace RectorsBlogAPI.Features.Identity
             }
 
             var token = identityService.GenerateJwtToken(user.Id.ToString(), user.UserName, appSettings.Secret);
+            
 
-            return Ok(JsonSerializer.Serialize(token));
+            return Ok(new { token, user.UserName, user.Id});
         }
 
     }

@@ -1,5 +1,5 @@
 <form [formGroup]="postForm" (ngSubmit)="create()">
-    <div class="form-group">
+    <div class="form-group mt-2">
         <label for="title">Title</label>
         <input type="text" class="form-control" id="title" formControlName="title">
     </div>
@@ -7,7 +7,7 @@
         This field is required!
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-2">
         <label for="posterURL">Poster URL</label>
         <input type="text" class="form-control" id="posterURL" formControlName="posterURL">
         </div>
@@ -15,7 +15,7 @@
             This field is required!
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-2">
         <label for="summary">Summary</label>
         <input type="text" class="form-control" id="summary" formControlName="summary">
         </div>
@@ -23,14 +23,20 @@
             This field is required!
     </div>
 
-    <div class="form-group">
+    <div class="form-group mt-2">
         <label for="exampleFormControlTextarea1">Post body</label>
         <textarea class="form-control" rows="3" formControlName="body"></textarea>
     </div>
-    
     <div *ngIf="body?.touched && body?.errors?.required" class="alert alert-danger" >
             This field is required!
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Post</button>
+    <div class="form-group mt-2">
+        <label for="exampleFormControlTextarea1">Categories</label>
+        <select class="form-select" multiple name="Categories" formControlName="categoryIds">
+            <option *ngFor="let category of categories" [ngValue]="category.categoryId">{{category.categoryName}}</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Create Post</button>
 </form>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RectorsBlogAPI.Data;
+using RectorsBlogAPI.Features.Categories.Models;
 using RectorsBlogAPI.Features.Posts.Models;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,9 @@ namespace RectorsBlogAPI.Features.Posts
             data = context;
         }
 
-        public async Task<int> Create(string title, string body, string summary, int authorId, string posterUrl)
+        public async Task<int> Create(string title, string body, string summary, int authorId, string posterUrl, int[] categoryIds)
         {
+
             var post = new Post()
             {
                 Title = title,
@@ -30,7 +32,21 @@ namespace RectorsBlogAPI.Features.Posts
             };
 
             data.Add(post);
+            await data.SaveChangesAsync();
 
+            if (categoryIds != null && categoryIds.Length != 0)
+            {
+                var selectedCategories = await data.Categories.Where(t => categoryIds.Contains(t.CategoryId)).ToListAsync();
+                foreach (var category in selectedCategories)
+                {
+                    data
+                        .Add(new PostCategory
+                        {
+                            CategoryId = category.CategoryId,
+                            PostId = post.PostId
+                        });
+                }
+            }
             await data.SaveChangesAsync();
 
             return post.PostId;
@@ -73,7 +89,7 @@ namespace RectorsBlogAPI.Features.Posts
                 .Select(p => new PostDetailsServiceModel 
                 {
                     PostId = p.PostId,
-                    AuthorId = p.AuthorId,
+                    UserId = p.AuthorId,
                     UserName = p.Author.UserName,
                     posterURL = p.posterURL,
                     Summary = p.Summary,
@@ -121,6 +137,29 @@ namespace RectorsBlogAPI.Features.Posts
         private async Task<Post> ByIdAndByUserId(int postId, int userId) 
             => await data.Posts.Where(p => p.PostId == postId && p.AuthorId == userId).FirstOrDefaultAsync();
 
+        public async Task<IEnumerable<PostListingServiceModel>> ByCategoryName(string name)
+        {
+            var posts = data.Posts.Include(e => e.PostCategories);
 
+            // posts filtered by category name
+            var filtered = await posts
+                .Where(p => p.PostCategories
+                .Any(c => c.Category.CategoryName == name))
+                .Select(p => new PostListingServiceModel 
+                { 
+                    creationDate = p.creationDate,
+                    posterURL = p.posterURL,
+                    Summary = p.Summary,
+                    PostId = p.PostId,
+                    Title = p.Title,
+                    UserId = p.Author.Id,
+                    UserName = p.Author.UserName
+                })
+                .ToListAsync();
+
+            return filtered;
+
+        }
+        
     }
 }

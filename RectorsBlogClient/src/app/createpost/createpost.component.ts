@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Category } from '../models/Category';
 import { PostService } from '../services/post.service';
 
 @Component({
@@ -9,22 +11,28 @@ import { PostService } from '../services/post.service';
 })
 export class CreatepostComponent implements OnInit {
 
-  postForm : FormGroup;
-  constructor(private fb: FormBuilder, private postService: PostService) {
+  categories : Array<Category> = [];
+  postForm! : FormGroup;
+  constructor(private fb: FormBuilder, private postService: PostService, private router: Router) {
     this.postForm = fb.group({
       'title': ['', Validators.required],
       'posterURL': ['', Validators.required],
       'summary': ['', Validators.required],
       'body': ['', Validators.required],
+      'categoryIds': ['']
     });
+    this.postService.getCategories().subscribe(res => {
+      this.categories = res;
+    })
    }
 
   ngOnInit(): void {
   }
 
   create() {
+    console.log(this.postForm.value)
     this.postService.create(this.postForm.value).subscribe(res => {
-      console.log(res);
+      this.router.navigate(['posts']);
     });
   }
 

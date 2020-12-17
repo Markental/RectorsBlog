@@ -20,10 +20,23 @@ export class AuthService {
     return this.http.post(this.registerPath, data);
   }
 
+  saveUserId(id: string) {
+    localStorage.setItem('userId', id);
+  }
+  getUserId() {
+    return localStorage.getItem("userId");
+  }
+
+  saveUserName(name: string){
+    localStorage.setItem('userName', name);
+  }
+  getUserName() {
+    return localStorage.getItem("userName");
+  }
+
   saveToken(token:any) {
     localStorage.setItem('token', token);
   }
-
   getToken() {
     return localStorage.getItem("token");
   }

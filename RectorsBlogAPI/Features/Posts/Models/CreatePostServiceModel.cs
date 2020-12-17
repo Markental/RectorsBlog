@@ -12,7 +12,7 @@ namespace RectorsBlogAPI.Features.Posts.Models
         public string Summary { get; set; }
         [Required]
         public string Body { get; set; }
-
+        public int[] categoryIds { get; set; }
 
     }
 }

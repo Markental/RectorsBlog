@@ -17,7 +17,6 @@ namespace RectorsBlogAPI.Data
         {
         }
 
-
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -27,7 +26,10 @@ namespace RectorsBlogAPI.Data
         {
             base.OnModelCreating(builder);
 
-            /// not yet migrated
+            //Unique category names
+            builder.Entity<Category>()
+                .HasIndex(c => c.CategoryName)
+                .IsUnique();
 
             // post has one user, which has many posts
             builder.Entity<Post>()
@@ -50,13 +52,11 @@ namespace RectorsBlogAPI.Data
                 .HasForeignKey(c => c.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            ///////////////////
-
-
             // many to many for PostCategory
             builder
                 .Entity<PostCategory>()
-                .HasKey(pc => new { 
+                .HasKey(pc => new 
+                { 
                     pc.PostId, 
                     pc.CategoryId 
                 });
