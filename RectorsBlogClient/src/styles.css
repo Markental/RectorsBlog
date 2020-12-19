@@ -4,6 +4,10 @@ form {
     padding: 10% 15%;
 }
 
+a {
+  text-decoration-line: none;
+}
+
 .horizontal-scroll-wrapper{
   position:absolute;
   display:block;
